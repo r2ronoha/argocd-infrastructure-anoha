@@ -1,0 +1,71 @@
+cluster:
+  name: "sbox"
+  environment: "sbox"
+
+argo-cd:
+  controller:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  server:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx-private
+        nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
+        nginx.ingress.kubernetes.io/proxy-buffering: 'on'
+        nginx.ingress.kubernetes.io/proxy-buffers: 4 "512k"
+      hosts:
+      - "argocd-infrastructure.sbox.jamf.build"
+
+  repoServer:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  applicationSet:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  dex:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  configs:
+    params:
+      server.insecure: true
+    cm:
+      url: https://argocd-infrastructure.sbox.jamf.build
