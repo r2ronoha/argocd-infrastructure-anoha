@@ -1,0 +1,13 @@
+*.tfplan
+*.tfstate
+.terraform/
+.terraform.lock.hcl
+.idea
+terraform.iml
+.terragrunt-cache
+
+backend.tf
+provider.tf
+
+.DS_Store
+venv

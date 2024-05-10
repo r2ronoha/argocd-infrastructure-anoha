@@ -1,0 +1,90 @@
+run-name: ${{ github.actor }} deploying to Staging and Prod 🚀
+
+on:
+  push:
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions: write-all
+
+jobs:
+  discover-environments:
+    name: Discover Environments
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    outputs:
+      staging-environments: ${{ steps.list-staging-environments.outputs.environments }}
+      production-environments: ${{ steps.list-production-environments.outputs.environments }}
+    steps:
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v4
+    - name: Output staging environments
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      id: list-staging-environments
+      with:
+        environment: staging
+    - name: Output production environments
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      id: list-production-environments
+      with:
+        environment: production
+
+  deploy-staging:
+    environment: staging
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    needs: discover-environments
+    if: ${{ needs.discover-environments.outputs.staging-environments != 'empty' }}
+    strategy:
+      matrix: ${{ fromJson(needs.discover-environments.outputs.staging-environments) }}
+      fail-fast: false
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+    - name: apply
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.0.0
+      with:
+        environment: ${{ matrix.environments }}
+        action: apply
+        gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
+        gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
+
+  plan-production:
+    environment: staging
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    needs: [discover-environments,deploy-staging]
+    strategy:
+      matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
+      fail-fast: false
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+    - name: plan
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.0.0
+      with:
+        environment: ${{ matrix.environments }}
+        action: plan
+        gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
+        gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
+
+  deploy-production:
+    environment: production
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    needs: [discover-environments,deploy-staging,plan-production]
+    strategy:
+      matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
+      fail-fast: false
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+    - name: apply
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.0.0
+      with:
+        environment: ${{ matrix.environments }}
+        action: apply
+        gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
+        gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
