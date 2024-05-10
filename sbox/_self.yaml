@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/jamf/argocd-infrastructure.git
     targetRevision: JSC-59106-init
-    path: sbox
+    path: ./
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

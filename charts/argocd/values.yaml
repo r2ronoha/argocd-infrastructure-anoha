@@ -24,7 +24,7 @@ argo-cd:
       application.resourceTrackingMethod: annotation
 
   redis:
-    enabled: false
+    enabled: true
 
   redis-ha:
     enabled: false

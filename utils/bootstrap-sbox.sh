@@ -4,4 +4,4 @@ cd charts/argocd
 
 helm upgrade --install --create-namespace --dependency-update argocd . -n argocd -f ./values.yaml -f ./values-sbox.yaml
 
-kubectl apply -f staging/_self.yaml
+kubectl apply -f ../../sbox/_self.yaml
