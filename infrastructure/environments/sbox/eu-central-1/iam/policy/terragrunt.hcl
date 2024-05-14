@@ -17,7 +17,6 @@ terraform {
 inputs = {
   items = {
     argocd_secret = {
-
       name        = "argocd-secret-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
       description = "Policy for argocd to access external secrets"
 
@@ -29,14 +28,14 @@ inputs = {
           "Sid": "SSM",
           "Effect": "Allow",
           "Action": [
-              "sts:AssumeRole",
-              "ssm:GetParameterHistory",
-              "ssm:GetParametersByPath",
-              "ssm:GetParameters",
-              "ssm:GetParameter",
-              "ssm:DescribeParameters",
-              "secretsmanager:GetSecretValue",
-              "secretsmanager:DescribeSecret"
+            "sts:AssumeRole",
+            "ssm:GetParameterHistory",
+            "ssm:GetParametersByPath",
+            "ssm:GetParameters",
+            "ssm:GetParameter",
+            "ssm:DescribeParameters",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret"
           ],
           "Resource": "*"
         },
@@ -50,10 +49,8 @@ inputs = {
           "Resource": "*",
                 "Condition": {
                     "ForAllValues:StringEquals": {
-                    "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": [
-                        "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
-                    ]
-                }
+                    "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
+                },
                 "StringLike": {
                     "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
                 }
@@ -65,19 +62,17 @@ inputs = {
     }
 
     argocd_cluster = {
-
       name        = "argocd-cluster-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
       description = "Policy for ArgoCD Infrastructure to communicate with registered clusters"
+      path        = "/"
 
       policy = <<EOF
     {
       "Version": "2012-10-17",
       "Statement": [
         {
-          "Sid": "Role"
-          "Action": [
-            "sts:AssumeRole"
-          ],
+          "Sid": "Role",
+          "Action": "sts:AssumeRole",
           "Resource": "arn:aws:iam::*:role/argocd-cluster-*",
           "Effect": "Allow"
         },
