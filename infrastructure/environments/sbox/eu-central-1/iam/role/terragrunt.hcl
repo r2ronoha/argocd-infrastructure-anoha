@@ -53,6 +53,7 @@ inputs = {
 
       role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
     }
+    
     argocd_cluster = {
       role_name                    = "argocd-cluster-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"
       role_description             = "ArgoCD Infrastructure Role to communicate with registered clusters ({{ ENV }})"
