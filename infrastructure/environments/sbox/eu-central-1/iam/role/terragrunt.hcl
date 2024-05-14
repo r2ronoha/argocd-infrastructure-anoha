@@ -27,7 +27,10 @@ dependency "policy" {
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
   mock_outputs = {
     wrapper = {
-      tf_plan = {
+      argocd_secret = {
+        arn = "arn:aws:iam::aws:policy/mock" # Mocking policy arn
+      }
+      argocd_cluster = {
         arn = "arn:aws:iam::aws:policy/mock" # Mocking policy arn
       }
     }
@@ -53,10 +56,10 @@ inputs = {
 
       role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
     }
-    
+
     argocd_cluster = {
       role_name                    = "argocd-cluster-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"
-      role_description             = "ArgoCD Infrastructure Role to communicate with registered clusters ({{ ENV }})"
+      role_description             = "ArgoCD Infrastructure Role to communicate with registered clusters"
       oidc_subjects_with_wildcards = local.formatted_repositories_admin
 
       role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]

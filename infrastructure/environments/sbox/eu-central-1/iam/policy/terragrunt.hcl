@@ -63,11 +63,11 @@ inputs = {
     }
     EOF
     }
-    
+
     argocd_cluster = {
 
       name        = "argocd-cluster-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
-      description = "Policy for ArgoCD Infrastructure to communicate with registered clusters ({{ ENV }})"
+      description = "Policy for ArgoCD Infrastructure to communicate with registered clusters"
 
       policy = <<EOF
     {
@@ -98,6 +98,6 @@ inputs = {
       ]
     }
   EOF
-    }      
+    }
   }
 }
