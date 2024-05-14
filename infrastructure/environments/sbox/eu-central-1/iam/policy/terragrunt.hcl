@@ -18,7 +18,7 @@ inputs = {
   items = {
     argocd_secret = {
 
-      name        = "argocd_secret-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
+      name        = "argocd-secret-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
       description = "Policy for argocd to access external secrets"
 
       policy = <<EOF
@@ -63,5 +63,41 @@ inputs = {
     }
     EOF
     }
+    
+    argocd_cluster = {
+
+      name        = "argocd-cluster-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}"
+      description = "Policy for ArgoCD Infrastructure to communicate with registered clusters ({{ ENV }})"
+
+      policy = <<EOF
+    {
+      "Version": "2012-10-17",
+	    "Statement": [
+		    {
+          "Sid": "Role"
+			    "Action": [
+				    "sts:AssumeRole"
+			    ],
+			    "Resource": "arn:aws:iam::*:role/argocd-cluster-*",
+			    "Effect": "Allow"
+		    },
+        {
+        "Sid": "Trust",
+			  "Effect": "Allow",
+			  "Action": "sts:AssumeRoleWithWebIdentity",
+        "Principal": {
+              "Federated": "arn:aws:iam::${local.env_vars.locals.account_id}:oidc-provider/oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}"
+          },
+			  "Resource": "*",
+              "Condition": {
+                 "StringLike": {
+                    "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}*:argocd-application-controller"
+              }
+            }
+       }
+	    ]
+    }
+  EOF
+    }      
   }
 }

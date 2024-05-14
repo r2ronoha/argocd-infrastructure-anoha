@@ -47,12 +47,18 @@ inputs = {
 
   items = {
     argocd_secret = {
-      role_name                    = "argocd_secret-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"
+      role_name                    = "argocd-secret-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"
       role_description             = "Role for argocd-infrastructure to access external secrets"
       oidc_subjects_with_wildcards = local.formatted_repositories_admin
 
-      # Cloud Wan resources require Admin access
       role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
+    }
+    argocd_cluster = {
+      role_name                    = "argocd-cluster-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"
+      role_description             = "ArgoCD Infrastructure Role to communicate with registered clusters ({{ ENV }})"
+      oidc_subjects_with_wildcards = local.formatted_repositories_admin
+
+      role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]
     }
   }
 }
