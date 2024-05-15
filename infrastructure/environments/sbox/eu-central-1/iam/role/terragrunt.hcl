@@ -52,10 +52,9 @@ inputs = {
               "Principal": {
                 "Federated": "arn:aws:iam::${local.env_vars.locals.account_id}:oidc-provider/oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}"
               },
-              "Resource": "*",
-                "Condition": {
-                    "ForAllValues:StringEquals": {
-                      "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
+              "Condition": {
+                "ForAllValues:StringEquals": {
+                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
                 },
                 "StringLike": {
                   "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
@@ -83,10 +82,9 @@ inputs = {
               "Principal": {
                 "Federated": "arn:aws:iam::${local.env_vars.locals.account_id}:oidc-provider/oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}"
               },
-              "Resource": "*",
-                "Condition": {
-                  "StringLike": {
-                    "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}*:argocd-application-controller"
+              "Condition": {
+                "StringLike": {
+                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}*:argocd-application-controller"
               }
             }
        }
