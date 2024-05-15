@@ -1,0 +1,49 @@
+run-name: ${{ github.actor }} deploying to Sbox 🚀
+
+on:
+  pull_request:
+    types: [ labeled ]
+
+concurrency:
+  group: ${{ github.workflow }}
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions: write-all
+
+jobs:
+  discover-environments:
+    name: Discover Sbox environments
+    if: contains(github.event.pull_request.labels.*.name, 'deploy to sbox')
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    outputs:
+      sbox-environments: ${{ steps.list-sbox-environments.outputs.environments }}
+    steps:
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v4
+    - name: Output sbox environments
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      id: list-sbox-environments
+      with:
+        environment: sbox
+
+  deploy-sbox:
+    name: Deploy to Sbox
+    if: contains(github.event.pull_request.labels.*.name, 'deploy to sbox')
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    needs: discover-environments
+    strategy:
+      matrix: ${{ fromJson(needs.discover-environments.outputs.sbox-environments) }}
+      fail-fast: false
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+    - name: apply
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      with:
+        environment: ${{ matrix.environments }}
+        action: apply
+        gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
+        gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
+        account_id: "082372472775"
