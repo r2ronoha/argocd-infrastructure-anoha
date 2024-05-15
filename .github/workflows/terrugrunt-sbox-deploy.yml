@@ -40,9 +40,10 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: apply
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.0.0
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
       with:
         environment: ${{ matrix.environments }}
         action: apply
         gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
         gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
+        account_id: "082372472775"
