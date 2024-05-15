@@ -18,7 +18,7 @@ inputs = {
   items = {
     argocd_secret = {
       name        = "argocd-infrastructure-secret-${local.env_vars.locals.tags.environment}"
-      description = "Policy for argocd to access external secrets"
+      description = "Policy for argocd-infrastructure to access external secrets"
 
       policy = <<EOF
     {
@@ -43,7 +43,7 @@ inputs = {
 
     argocd_cluster = {
       name        = "argocd-infrastructure-cluster-${local.env_vars.locals.tags.environment}"
-      description = "Policy for ArgoCD Infrastructure to communicate with registered clusters"
+      description = "Policy for argocd-infrastructure to communicate with registered clusters"
       path        = "/"
 
       policy = <<EOF

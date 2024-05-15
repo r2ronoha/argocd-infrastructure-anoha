@@ -37,9 +37,9 @@ inputs = {
 
   items = {
     argocd_secret = {
-      role_name                    = "argocd-infrastructure-secret-${local.env_vars.locals.tags.environment}"
-      role_description             = "Role for argocd-infrastructure to access external secrets"
-      custom_role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
+      role_name                       = "argocd-infrastructure-secret-${local.env_vars.locals.tags.environment}"
+      role_description                = "Role for argocd-infrastructure to access external secrets"
+      custom_role_policy_arns         = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
 
       create_custom_role_trust_policy = true
       custom_role_trust_policy        = <<EOF
@@ -68,9 +68,9 @@ inputs = {
     }
 
     argocd_cluster = {
-      role_name                    = "argocd-infrastructure-cluster-${local.env_vars.locals.tags.environment}"
-      role_description             = "ArgoCD Infrastructure Role to communicate with registered clusters"
-      custom_role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]
+      role_name                       = "argocd-infrastructure-cluster-${local.env_vars.locals.tags.environment}"
+      role_description                = "Role for argocd-infrastructure to communicate with registered clusters"
+      custom_role_policy_arns         = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]
 
       create_custom_role_trust_policy = true
       custom_role_trust_policy        = <<EOF
