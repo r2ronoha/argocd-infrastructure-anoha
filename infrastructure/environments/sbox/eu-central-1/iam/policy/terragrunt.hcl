@@ -38,6 +38,8 @@ inputs = {
           ],
           "Resource": "*"
         }
+        ]
+      }
     EOF
     }
 
@@ -55,6 +57,8 @@ inputs = {
           "Resource": "arn:aws:iam::*:role/ArgoCDClusterRole-*",
           "Effect": "Allow"
         }
+        ]
+      }
     EOF
     }
   }

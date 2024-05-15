@@ -1,6 +1,6 @@
 locals {
-  env_vars            = read_terragrunt_config(find_in_parent_folders("../env.hcl"))
-  region_vars         = read_terragrunt_config(find_in_parent_folders("region_vars.hcl"))
+  env_vars    = read_terragrunt_config(find_in_parent_folders("../env.hcl"))
+  region_vars = read_terragrunt_config(find_in_parent_folders("region_vars.hcl"))
 }
 
 
@@ -37,9 +37,9 @@ inputs = {
 
   items = {
     argocd_secret = {
-      role_name                       = "argocd-infrastructure-secret-${local.env_vars.locals.tags.environment}"
-      role_description                = "Role for argocd-infrastructure to access external secrets"
-      custom_role_policy_arns         = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
+      role_name               = "argocd-infrastructure-secret-${local.env_vars.locals.tags.environment}"
+      role_description        = "Role for argocd-infrastructure to access external secrets"
+      custom_role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_secret.arn}"]
 
       create_custom_role_trust_policy = true
       custom_role_trust_policy        = <<EOF
@@ -68,9 +68,9 @@ inputs = {
     }
 
     argocd_cluster = {
-      role_name                       = "argocd-infrastructure-cluster-${local.env_vars.locals.tags.environment}"
-      role_description                = "Role for argocd-infrastructure to communicate with registered clusters"
-      custom_role_policy_arns         = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]
+      role_name               = "argocd-infrastructure-cluster-${local.env_vars.locals.tags.environment}"
+      role_description        = "Role for argocd-infrastructure to communicate with registered clusters"
+      custom_role_policy_arns = ["${dependency.policy.outputs.wrapper.argocd_cluster.arn}"]
 
       create_custom_role_trust_policy = true
       custom_role_trust_policy        = <<EOF
