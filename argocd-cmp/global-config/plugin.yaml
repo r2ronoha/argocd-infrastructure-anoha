@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: global-config-cmp
+spec:
+  version: v0.1.0
+  generate:
+    command: ["sh"]
+    args: ["-c", "/home/argocd/scripts/generate.sh"]
+  allowConcurrency: true
+  lockRepo: true

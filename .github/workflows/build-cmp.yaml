@@ -1,0 +1,62 @@
+name: Build CMP
+on:
+  pull_request:
+    paths:
+    - 'argocd-cmp/global-config/**'
+  push:
+    branches:
+    - main
+    paths:
+    - 'argocd-cmp/global-config/**'
+
+env:
+  ECR_REGISTRY_ACCOUNT: '359585083818'
+  ECR_REPOSITORY_TEST: 'jamf/test/argocd/cmp/global-config'
+  ECR_REPOSITORY_PROD: 'jamf/ga/argocd/cmp/global-config'
+  ECR_REGION: 'us-east-1'
+  CMP_PATH: 'argocd-cmp/global-config'
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  build:
+    runs-on: jamf-ubuntu-latest
+    steps:
+    - name: Checkout the latest code
+      uses: actions/checkout@v4
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ env.ECR_REGISTRY_ACCOUNT }}:role/ecr-github-oidc
+        role-session-name: gh-actions
+        aws-region: ${{ env.ECR_REGION }}
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      with:
+        registries: ${{ env.ECR_REGISTRY }}
+        mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
+    - name: Get short sha
+      id: short-sha
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+    - name: Get ECR repository
+      id: get-ecr-repository
+      run: echo "ecr_repository=${{ github.ref == 'refs/heads/main' && env.ECR_REPOSITORY_PROD || env.ECR_REPOSITORY_TEST }}" >> $GITHUB_OUTPUT
+    - name: Build Docker image
+      working-directory: ./${{ env.CMP_PATH }}
+      env:
+        ECR_REGISTRY_URL: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ steps.short-sha.outputs.sha_short }}
+        ECR_REPOSITORY: ${{ steps.get-ecr-repository.outputs.ecr_repository }}
+      run: |
+        docker build -t $ECR_REGISTRY_URL/$ECR_REPOSITORY:$IMAGE_TAG .
+    - name: Push Docker image
+      env:
+        ECR_REGISTRY_URL: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ steps.short-sha.outputs.sha_short }}
+        ECR_REPOSITORY: ${{ steps.get-ecr-repository.outputs.ecr_repository }}
+      run: |
+        echo "::notice::pushing image: $ECR_REGISTRY_URL/$ECR_REPOSITORY:$IMAGE_TAG"
+        docker push $ECR_REGISTRY_URL/$ECR_REPOSITORY:$IMAGE_TAG

@@ -1,0 +1,66 @@
+cluster:
+  name: "sbox"
+  environment: "sbox"
+
+argo-cd:
+  controller:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  server:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+    ingress:
+      enabled: true
+      hosts:
+      - "argocd-infrastructure.sbox.jamf.build"
+
+  repoServer:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  applicationSet:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  dex:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  configs:
+    params:
+      server.insecure: true
+    cm:
+      url: https://argocd-infrastructure.sbox.jamf.build

@@ -1,0 +1,84 @@
+global:
+  domain: argocd-infrastructure.staging.jamf.build
+
+cluster:
+  name: "staging"
+  environment: "stage"
+
+argo-cd:
+  controller:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  server:
+    service:
+      type: NodePort
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+    ingress:
+      enabled: true
+      controller: aws
+      ingressClassName: alb
+      hosts:
+      - "argocd-infrastructure.staging.jamf.build"
+      annotations:
+        alb.ingress.kubernetes.io/scheme: internal
+        alb.ingress.kubernetes.io/target-type: instance
+        alb.ingress.kubernetes.io/backend-protocol: HTTP
+        alb.ingress.kubernetes.io/group.name: delta.internal
+        alb.ingress.kubernetes.io/tags: Environment=staging,Team=delta
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
+        alb.ingress.kubernetes.io/ssl-redirect: '443'
+      aws:
+        serviceType: NodePort # <- Used with target-type: ip
+        backendProtocolVersion: GRPC
+
+  repoServer:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  applicationSet:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd"
+
+  dex:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  configs:
+    params:
+      server.insecure: true
+    cm:
+      url: https://argocd-infrastructure.staging.jamf.build
