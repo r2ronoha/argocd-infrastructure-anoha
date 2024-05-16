@@ -60,7 +60,6 @@ argo-cd:
         memory: 64Mi
 
   configs:
-    params:
-      server.insecure: true
     cm:
       url: https://argocd-infrastructure.sbox.jamf.build
+      admin.enabled: true

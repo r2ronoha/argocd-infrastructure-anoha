@@ -163,8 +163,9 @@ argo-cd:
   configs:
     params:
       "applicationsetcontroller.policy": "create-update"
+      server.insecure: true
     cm:
-      admin.enabled: true
+      admin.enabled: false
       accounts.applications-syncer: apiKey
       accounts.terraform: apiKey
 
