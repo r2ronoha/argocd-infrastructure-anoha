@@ -39,7 +39,7 @@ argo-cd:
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
         alb.ingress.kubernetes.io/ssl-redirect: '443'
       aws:
-        serviceType: NodePort # <- Used with target-type: ip
+        serviceType: NodePort
         backendProtocolVersion: GRPC
 
   repoServer:
