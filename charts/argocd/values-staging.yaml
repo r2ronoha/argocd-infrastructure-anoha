@@ -4,6 +4,7 @@ global:
 cluster:
   name: "euc1-buildsvc-stage240513"
   environment: "stage"
+  region: "eu-central-1"
 
 argo-cd:
   controller:

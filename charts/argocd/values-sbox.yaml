@@ -1,6 +1,7 @@
 cluster:
   name: "euc1-delta-sbox240423"
   environment: "sbox"
+  region: "eu-central-1"
 
 argo-cd:
   controller:
