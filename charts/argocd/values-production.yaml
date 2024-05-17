@@ -35,7 +35,7 @@ argo-cd:
         alb.ingress.kubernetes.io/target-type: instance
         alb.ingress.kubernetes.io/backend-protocol: HTTP
         alb.ingress.kubernetes.io/group.name: delta.internal
-        alb.ingress.kubernetes.io/tags: Environment=production,Team=delta
+        alb.ingress.kubernetes.io/tags: Environment=prod,Team=delta
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
         alb.ingress.kubernetes.io/ssl-redirect: '443'
       aws:
