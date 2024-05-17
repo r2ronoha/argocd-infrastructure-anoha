@@ -19,7 +19,7 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: "argocd"
+        namespace: "argocd-infrastructure"
     config:
       application.resourceTrackingMethod: annotation
 
@@ -34,7 +34,7 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: "argocd"
+        namespace: "argocd-infrastructure"
 
     env:
     - name: WANDERA_VIEWER_TOKEN
@@ -148,14 +148,14 @@ argo-cd:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: "argocd"
+        namespace: "argocd-infrastructure"
 
   applicationSet:
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: "argocd"
+        namespace: "argocd-infrastructure"
 
   notifications:
     enabled: false
@@ -171,8 +171,13 @@ argo-cd:
 
     rbac:
       policy.csv: |
-        p, terraform, clusters, *, *, allow
-        p, role:applications-sync, applications, sync, *, allow
-        g, applications-syncer, role:admin
         g, Wandera - Delta Team, role:admin
       scopes: '[email,groups]'
+
+  dex:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi

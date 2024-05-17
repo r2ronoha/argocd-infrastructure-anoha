@@ -2,7 +2,7 @@ global:
   domain: argocd-infrastructure.staging.jamf.build
 
 cluster:
-  name: "staging"
+  name: "euc1-buildsvc-stage240513"
   environment: "stage"
 
 argo-cd:
@@ -15,7 +15,7 @@ argo-cd:
         memory: 1Gi
     metrics:
       serviceMonitor:
-        namespace: "argocd"
+        namespace: "argocd-infrastructure"
 
   server:
     service:
@@ -26,9 +26,6 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 128Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
     ingress:
       enabled: true
       controller: aws
@@ -54,9 +51,6 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 256Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
 
   applicationSet:
     resources:
@@ -67,15 +61,7 @@ argo-cd:
         memory: 128Mi
     metrics:
       serviceMonitor:
-        namespace: "argocd"
-
-  dex:
-    resources:
-      limits:
-        memory: 64Mi
-      requests:
-        cpu: 100m
-        memory: 64Mi
+        namespace: "argocd-infrastructure"
 
   configs:
     cm:

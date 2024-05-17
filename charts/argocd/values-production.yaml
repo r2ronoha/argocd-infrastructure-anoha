@@ -2,7 +2,7 @@ global:
   domain: argocd-infrastructure.jamf.build
 
 cluster:
-  name: "production"
+  name: "euc1-buildsvc-prod240515"
   environment: "prod"
 
 argo-cd:
@@ -13,9 +13,6 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 1Gi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
 
   server:
     service:
@@ -26,9 +23,7 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 128Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
+
     ingress:
       enabled: true
       controller: aws
@@ -40,7 +35,7 @@ argo-cd:
         alb.ingress.kubernetes.io/target-type: instance
         alb.ingress.kubernetes.io/backend-protocol: HTTP
         alb.ingress.kubernetes.io/group.name: delta.internal
-        alb.ingress.kubernetes.io/tags: Environment=staging,Team=delta
+        alb.ingress.kubernetes.io/tags: Environment=production,Team=delta
         alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
         alb.ingress.kubernetes.io/ssl-redirect: '443'
       aws:
@@ -54,9 +49,6 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 256Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
 
   applicationSet:
     resources:
@@ -65,17 +57,6 @@ argo-cd:
       requests:
         cpu: 100m
         memory: 128Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd"
-
-  dex:
-    resources:
-      limits:
-        memory: 64Mi
-      requests:
-        cpu: 100m
-        memory: 64Mi
 
   configs:
     cm:
@@ -97,8 +78,6 @@ argo-cd:
             groupsAttr: group
     rbac:
       policy.csv: |
-        p, applications-viewer, applications, get, *, allow
-        p, terraform, clusters, *, *, allow
         p, role:applications-sync, applications, sync, *, allow
         p, role:sync-monitoring-proxy, applications, sync, *monitoring-proxy, allow
         g, JSC-ArgoCD-ReadOnly, role:readonly

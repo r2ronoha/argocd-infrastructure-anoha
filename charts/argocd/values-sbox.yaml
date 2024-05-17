@@ -1,5 +1,5 @@
 cluster:
-  name: "sbox"
+  name: "euc1-delta-sbox240423"
   environment: "sbox"
 
 argo-cd:
@@ -11,8 +11,7 @@ argo-cd:
         cpu: 200m
         memory: 1Gi
     metrics:
-      serviceMonitor:
-        namespace: "argocd"
+      enabled: false
 
   server:
     resources:
@@ -22,8 +21,7 @@ argo-cd:
         cpu: 200m
         memory: 128Mi
     metrics:
-      serviceMonitor:
-        namespace: "argocd"
+      enabled: false
     ingress:
       enabled: true
       hosts:
@@ -37,8 +35,7 @@ argo-cd:
         cpu: 200m
         memory: 256Mi
     metrics:
-      serviceMonitor:
-        namespace: "argocd"
+      enabled: false
 
   applicationSet:
     resources:
@@ -48,16 +45,7 @@ argo-cd:
         cpu: 100m
         memory: 128Mi
     metrics:
-      serviceMonitor:
-        namespace: "argocd"
-
-  dex:
-    resources:
-      limits:
-        memory: 64Mi
-      requests:
-        cpu: 100m
-        memory: 64Mi
+      enabled: false
 
   configs:
     cm:

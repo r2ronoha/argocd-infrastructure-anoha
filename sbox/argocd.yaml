@@ -1,13 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 'argocd'
+  name: 'argocd-infrastructure'
   labels:
     team: delta
     app: argocd
-    cluster-type: k8s
-    location: euc1-delta-sbox240423
+    cluster-type: eks
+    cluster: euc1-delta-sbox240423
     environment: sbox
+    region: eu-central-1
 spec:
   project: default
   source:
@@ -20,4 +21,4 @@ spec:
       - values-sbox.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: argocd-infrastructure

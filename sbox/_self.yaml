@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: self
-  namespace: argocd
+  namespace: argocd-infrastructure
 spec:
   project: default
   source:
@@ -11,6 +11,6 @@ spec:
     path: ./sbox
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: argocd-infrastructure
 #  syncPolicy:
 #    automated: {}
