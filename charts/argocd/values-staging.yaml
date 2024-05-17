@@ -1,0 +1,85 @@
+global:
+  domain: argocd-infrastructure.staging.jamf.build
+
+cluster:
+  name: "euc1-buildsvc-stage240513"
+  environment: "stage"
+  region: "eu-central-1"
+
+argo-cd:
+  controller:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd-infrastructure"
+
+  server:
+    service:
+      type: NodePort
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
+    ingress:
+      enabled: true
+      controller: aws
+      ingressClassName: alb
+      hosts:
+      - "argocd-infrastructure.staging.jamf.build"
+      annotations:
+        alb.ingress.kubernetes.io/scheme: internal
+        alb.ingress.kubernetes.io/target-type: instance
+        alb.ingress.kubernetes.io/backend-protocol: HTTP
+        alb.ingress.kubernetes.io/group.name: delta.internal
+        alb.ingress.kubernetes.io/tags: Environment=stage,Team=delta
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
+        alb.ingress.kubernetes.io/ssl-redirect: '443'
+      aws:
+        serviceType: NodePort
+        backendProtocolVersion: GRPC
+
+  repoServer:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  applicationSet:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    metrics:
+      serviceMonitor:
+        namespace: "argocd-infrastructure"
+
+  configs:
+    cm:
+      admin.enabled: true
+      url: https://argocd-infrastructure.staging.jamf.build
+      dex.config: |
+        logger:
+          level: debug
+          format: json
+        connectors:
+        - type: saml
+          id: okta
+          name: Okta
+          config:
+            ssoURL: https://jamfsw.okta.com/app/jamfsw_argocdinfrastructurestaging_1/exk1wo6xgs76wYAH40h8/sso/saml
+            caData: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURuRENDQW9TZ0F3SUJBZ0lHQVkrQ3ptalNNQTBHQ1NxR1NJYjNEUUVCQ3dVQU1JR09NUXN3Q1FZRFZRUUdFd0pWVXpFVE1CRUcKQTFVRUNBd0tRMkZzYVdadmNtNXBZVEVXTUJRR0ExVUVCd3dOVTJGdUlFWnlZVzVqYVhOamJ6RU5NQXNHQTFVRUNnd0VUMnQwWVRFVQpNQklHQTFVRUN3d0xVMU5QVUhKdmRtbGtaWEl4RHpBTkJnTlZCQU1NQm1waGJXWnpkekVjTUJvR0NTcUdTSWIzRFFFSkFSWU5hVzVtCmIwQnZhM1JoTG1OdmJUQWVGdzB5TkRBMU1UWXhPVEEzTXpaYUZ3MHpOREExTVRZeE9UQTRNelphTUlHT01Rc3dDUVlEVlFRR0V3SlYKVXpFVE1CRUdBMVVFQ0F3S1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ3d05VMkZ1SUVaeVlXNWphWE5qYnpFTk1Bc0dBMVVFQ2d3RQpUMnQwWVRFVU1CSUdBMVVFQ3d3TFUxTlBVSEp2ZG1sa1pYSXhEekFOQmdOVkJBTU1CbXBoYldaemR6RWNNQm9HQ1NxR1NJYjNEUUVKCkFSWU5hVzVtYjBCdmEzUmhMbU52YlRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTHh2TTZUSGlZaU8KY1RjTG91T0EwdEdueXNNWFNIM2VvSnhndEhZQjY2Vmd0MFl4cVpGblFvanRzZGpLcUpqdEUzM1BxOWhsRzFKYnJ4ai80NklDNUxlOApSdGFGVjFWYjQ3b0ZoUFQ2RzY2bzZ2NmlaN0plQU5DV3ZwV21QODI2cWtVdFpaZzNlbGU2MUxkaERVL3hWVTlma2JPV0JMZmpVMmhMClYvVEd6aDcwS3NKUEhPTkRONnROQ2V3R29vNDBqU0hnYkdDODBtUkhJYURZbXNhZjZkMG03bVJYR1duYThrWFBlZkU1RXVpZFhURkkKczdJZitZaGwrWld2dDMyMHRZRDlCd3FHNmNXaDZPMTU3NUF0VlBjbERGdUREYlhSYVZHZlVUVXlsQ0ltM1cvdzNGRUNpN0lSd3ZsQQpXcHlYMzdjOC9sbFYyclJHcUo2M0YzQ0MwdDhDQXdFQUFUQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFadTlsUzBVdTJmditIbXhrCm5SNXRUOXRHL1g3R3BYeDRZaUhxS3hlcTdtRVhvUHBLMyt5QlNOY0pILzhNYVZ3MTExVzBCTG9BOTRIMUljV1B4dTVzZVc0TzBZdDgKNC9iWkVzRGxaZVZJN2dNL0pualRxTGdzWGNJcUw2MklqUE1kaXovNExlR3RySXp5VUYxb0JpMHQrRWVqNDJRRHRDSHZ3aUNpOVBYMwpTSXovNENhVkk3aGpIWE9RUVY1QTA5VFE1THU1QWRpeWJWclJTYms1ak9VMlF3QVRlajF3R3ZqZStybjlqdHdWb3BDZncvUFIxdXVFCnFiRUdYOXRlWnlxYjhIbEpRSlBiZVg0d0xSN20rRWpxckFvak9WQzZGTVc5cFo0K2dCSFZPZWZZZ1oxS1pVd1d0SmVFUFErbUVVNmsKOUd6cFdyNXlEdUJ2aVdVZkpmRitlQT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+            redirectURI: https://argocd-infrastructure.staging.jamf.build/api/dex/callback
+            usernameAttr: email
+            emailAttr: email
+            groupsAttr: group

@@ -1,0 +1,96 @@
+global:
+  domain: argocd-infrastructure.jamf.build
+
+cluster:
+  name: "euc1-buildsvc-prod240515"
+  environment: "prod"
+  region: "eu-central-1"
+
+argo-cd:
+  controller:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 200m
+        memory: 1Gi
+
+  server:
+    service:
+      type: NodePort
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 200m
+        memory: 128Mi
+
+    ingress:
+      enabled: true
+      controller: aws
+      ingressClassName: alb
+      hosts:
+      - "argocd-infrastructure.jamf.build"
+      annotations:
+        alb.ingress.kubernetes.io/scheme: internal
+        alb.ingress.kubernetes.io/target-type: instance
+        alb.ingress.kubernetes.io/backend-protocol: HTTP
+        alb.ingress.kubernetes.io/group.name: delta.internal
+        alb.ingress.kubernetes.io/tags: Environment=prod,Team=delta
+        alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
+        alb.ingress.kubernetes.io/ssl-redirect: '443'
+      aws:
+        serviceType: NodePort
+        backendProtocolVersion: GRPC
+
+  repoServer:
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+
+  applicationSet:
+    resources:
+      limits:
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+  configs:
+    cm:
+      url: https://argocd-infrastructure.jamf.build
+      dex.config: |
+        logger:
+          level: debug
+          format: json
+        connectors:
+        - type: saml
+          id: okta
+          name: Okta
+          config:
+            ssoURL: https://jamfsw.okta.com/app/jamfsw_argocdinfrastructure_1/exk1wo6wtfv5Vl68A0h8/sso/saml
+            caData: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURuRENDQW9TZ0F3SUJBZ0lHQVkrQ3l2MFhNQTBHQ1NxR1NJYjNEUUVCQ3dVQU1JR09NUXN3Q1FZRFZRUUdFd0pWVXpFVE1CRUcKQTFVRUNBd0tRMkZzYVdadmNtNXBZVEVXTUJRR0ExVUVCd3dOVTJGdUlFWnlZVzVqYVhOamJ6RU5NQXNHQTFVRUNnd0VUMnQwWVRFVQpNQklHQTFVRUN3d0xVMU5QVUhKdmRtbGtaWEl4RHpBTkJnTlZCQU1NQm1waGJXWnpkekVjTUJvR0NTcUdTSWIzRFFFSkFSWU5hVzVtCmIwQnZhM1JoTG1OdmJUQWVGdzB5TkRBMU1UWXhPVEF6TlRKYUZ3MHpOREExTVRZeE9UQTBOVEphTUlHT01Rc3dDUVlEVlFRR0V3SlYKVXpFVE1CRUdBMVVFQ0F3S1EyRnNhV1p2Y201cFlURVdNQlFHQTFVRUJ3d05VMkZ1SUVaeVlXNWphWE5qYnpFTk1Bc0dBMVVFQ2d3RQpUMnQwWVRFVU1CSUdBMVVFQ3d3TFUxTlBVSEp2ZG1sa1pYSXhEekFOQmdOVkJBTU1CbXBoYldaemR6RWNNQm9HQ1NxR1NJYjNEUUVKCkFSWU5hVzVtYjBCdmEzUmhMbU52YlRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTHJVWDIvUzN1M2YKa20yc3ZiTkhxcEp2SXpjM0FMTjMwSzVVODdSRTVIY011RHV2WGpxM0ZoaFVWbUJsb3dteW0xd3BzcnF0enA1ZWtSM1R0OE9ITzRiSAplVnhyb0QwdWdrSGlrWXRzMXpnYjlUUU5OTG1YOHh1SlJDdXpQdWpUbHQ2MitFVy9KQlMwVG1SRHQ5U0loYzdsazRBWjRrWnFtM2xXCmEvaCtyV29yN0J1ZllhZ3I2TEhnZlM0bWx4VW82RDdNYWM0dGhMTTlYVUNnZXpHTDVDZlNuZHh2YkFrZXZ3UUJZY0s5Zng1UHJOci8KM042bHIvdmRjMGpLcjZzWkxwcEJkSnB4UWRoWjloS3VnRTFucExLVGlSWkh2RVQzc3o4KzM2a1l5MFRTaGdNK3psa3lYdVZpZmtrTgovOGx1bUl6NGZxUWtZNk80U3R3dDlqQm96S1VDQXdFQUFUQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFxcld1ZDJVcHdoL1QrcU1HCkRtZ0dzK1BGTVBIVW5WcjFid3l5RGFWTWpCc1NmdU9nbjdEOENMMlhXaGdkd3RIQlprZ3J4WmhTbUxsTzNjM2toZG5FMm5wT1pvV2YKTU5QaU1UNU00RmFjV2dxZHJ1MlJucFI4V1RoY016MW90UWFsMlNTUHFkWFZKUFh0WjlDUmRLaXUyOG1ZRTVvR2xTS3dxc3A4d0RFQgpSUDVVMHFHV3R2SFB5TlNQTXd5dSt0TUhkTkpNbE50L1FFa3BUK25BSjA1blRKZ213aTZJQmY0eUk4WlhzZjJrVUR3TW9KaFVoQ0ZmCmJ6SFRhSXdkMlAzcS9jK0xPRjA1QlZ2cWFEVzQ1RGg5REJzL1ZjMnhoWTVsNmhFUmJjVGprbUd0b2I2UVk3YzFRKzdoV001VU9vamkKOW9sVkUwVHppVlUwUEFkNXVVWjZMUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+            redirectURI: https://argocd-infrastructure.jamf.build/api/dex/callback
+            usernameAttr: email
+            emailAttr: email
+            groupsAttr: group
+    rbac:
+      policy.csv: |
+        p, role:applications-sync, applications, sync, *, allow
+        p, role:sync-monitoring-proxy, applications, sync, *monitoring-proxy, allow
+        g, JSC-ArgoCD-ReadOnly, role:readonly
+        g, Wandera - Delta Team, role:admin
+        g, Wandera Platform Core Team, role:admin
+        g, Wandera Platform Edge Team, role:admin
+        g, Wandera EOps Team, role:readonly
+        g, Wandera EOps Team, role:applications-sync
+        g, Wandera DBA Team, role:readonly
+        g, Wandera DBA Team, role:applications-sync
+        g, Wandera - DBA Group, role:readonly
+        g, Wandera - DBA Group, role:applications-sync
+        g, Wandera - Tech Team, role:readonly
+        g, Green Squad, role:sync-monitoring-proxy
+      scopes: '[email,groups]'

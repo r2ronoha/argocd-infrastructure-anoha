@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: self
+  namespace: argocd-infrastructure
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jamf/argocd-infrastructure.git
+    targetRevision: HEAD
+    path: ./sbox
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-infrastructure
+#  syncPolicy:
+#    automated: {}

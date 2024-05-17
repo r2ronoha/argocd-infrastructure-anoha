@@ -3,6 +3,8 @@ run-name: ${{ github.actor }} planning to deploy 🚀
 
 on:
   pull_request:
+    paths:
+    - 'infrastructure/**'
 
 concurrency:
   group: ${{ github.workflow }}

@@ -3,6 +3,8 @@ run-name: ${{ github.actor }} deploying to Sbox 🚀
 on:
   pull_request:
     types: [ labeled ]
+    paths:
+    - 'infrastructure/**'
 
 concurrency:
   group: ${{ github.workflow }}

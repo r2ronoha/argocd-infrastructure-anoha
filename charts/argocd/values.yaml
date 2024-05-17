@@ -1,0 +1,185 @@
+nameOverride: ""
+
+cluster:
+  server: https://kubernetes.default.svc
+  name: ""
+  environment: ""
+  region: ""
+  owner: "delta"
+  externalSecretIAM: ""
+  clusterType: "eks"
+  application: "buildsvc"
+
+ingressExternal:
+  enabled: false
+  host: ""
+  annotations: []
+
+argo-cd:
+  server:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: "argocd-infrastructure"
+    config:
+      application.resourceTrackingMethod: annotation
+
+  redis:
+    enabled: true
+
+  redis-ha:
+    enabled: false
+
+  repoServer:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: "argocd-infrastructure"
+
+    env:
+    - name: WANDERA_VIEWER_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: wandera-viewer-git
+          key: password
+
+    initContainers:
+    - name: install-helm-github
+      image: alpine/helm:3.12.3
+      resources:
+        limits:
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      volumeMounts:
+      - mountPath: /helm-working-dir
+        name: helm-working-dir
+      env:
+      - name: HELM_DATA_HOME
+        value: /helm-working-dir
+      - name: HELM_CACHE_HOME
+        value: /helm-working-dir
+      - name: HELM_CONFIG_HOME
+        value: /helm-working-dir
+      - name: GITHUB_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: wandera-viewer-git
+            key: password
+      command: [ "/bin/sh", "-c" ]
+      args:
+      - >-
+        apk --no-cache add curl bash &&
+        helm plugin install https://github.com/wandera/helm-github --version 0.1.7 &&
+        rm -rf $HELM_DATA_HOME/plugins/https-github.com-wandera-helm-github &&
+        helm repo add kubernetes-descriptors github://wandera/kubernetes-descriptors &&
+        helm repo add elastic https://helm.elastic.co &&
+        chmod -R 777 $HELM_DATA_HOME
+
+    extraContainers:
+    - name: global-config-cmp
+      command: [ /var/run/argocd/argocd-cmp-server ]
+      args: [ "--logformat=json" ]
+      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/test/argocd/cmp/global-config:8593f4f
+      env:
+      - name: HELM_CACHE_HOME
+        value: /helm-working-dir
+      - name: HELM_CONFIG_HOME
+        value: /helm-working-dir
+      - name: HELM_DATA_HOME
+        value: /helm-working-dir
+      - name: WANDERA_VIEWER_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: wandera-viewer-git
+            key: password
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      - mountPath: /tmp
+        name: global-config-cmp-tmp
+      - mountPath: /helm-working-dir
+        name: helm-working-dir
+      resources:
+        limits:
+          memory: 1.5Gi
+        requests:
+          cpu: 800m
+          memory: 1Gi
+    - name: argocd-cmp
+      command: [ /var/run/argocd/argocd-cmp-server ]
+      args: [ "--logformat=json" ]
+      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp:78506f6
+      env:
+      - name: HELM_CACHE_HOME
+        value: /helm-working-dir
+      - name: HELM_CONFIG_HOME
+        value: /helm-working-dir
+      - name: HELM_DATA_HOME
+        value: /helm-working-dir
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      - mountPath: /helm-working-dir
+        name: helm-working-dir
+      resources:
+        limits:
+          memory: 1.5Gi
+        requests:
+          cpu: 800m
+          memory: 1Gi
+    volumes:
+    - name: global-config-cmp-tmp
+      emptyDir: { }
+
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: "argocd-infrastructure"
+
+  applicationSet:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        namespace: "argocd-infrastructure"
+
+  notifications:
+    enabled: false
+
+  configs:
+    params:
+      "applicationsetcontroller.policy": "create-update"
+      server.insecure: true
+    cm:
+      admin.enabled: false
+      accounts.applications-syncer: apiKey
+      accounts.terraform: apiKey
+
+    rbac:
+      policy.csv: |
+        g, Wandera - Delta Team, role:admin
+      scopes: '[email,groups]'
+
+  dex:
+    resources:
+      limits:
+        memory: 64Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi

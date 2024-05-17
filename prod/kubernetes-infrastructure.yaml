@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-infrastructure
+  namespace: argocd-infrastructure
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/wandera/kubernetes-infrastructure.git
+    targetRevision: arogocd-chaos-poc
+    path: ./infrastructure-argocd-infrastructure-prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-infrastructure
+#  syncPolicy:
+#    automated: {}
