@@ -24,7 +24,7 @@ inputs = {
         sid = "AllowAccountRead"
         principals = [{
           type        = "AWS"
-          identifiers = ["arn:aws:iam::${local.env_vars.locals.account_id}:tf-apply-${local.env_vars.locals.tags.aws_region}-${local.env_vars.locals.tags.environment}"]
+          identifiers = ["arn:aws:iam::${local.env_vars.locals.account_id}:tf-apply-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"]
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
@@ -33,7 +33,7 @@ inputs = {
   }
   items = {
     wandera_git = {
-      name        = "/argocd/infrastructure/wandera-git-${local.env_vars.locals.tags.aws_region}-${local.env_vars.locals.tags.environment}"
+      name        = "/argocd/infrastructure/wandera-git-${local.env_vars.locals.tags.environment}"
       description = "AWS Secret Manager entry for GitHub Wandera Org. Credentials"
 
       # Version
@@ -45,7 +45,7 @@ inputs = {
     }
 
     jamf_git = {
-      name        = "/argocd/infrastructure/jamf-git-${local.env_vars.locals.tags.aws_region}-${local.env_vars.locals.tags.environment}"
+      name        = "/argocd/infrastructure/jamf-git-${local.env_vars.locals.tags.environment}"
       description = "AWS Secret Manager entry for GitHub Jamf App"
 
       # Version
