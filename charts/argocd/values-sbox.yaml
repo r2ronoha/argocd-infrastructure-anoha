@@ -2,6 +2,7 @@ cluster:
   name: "euc1-delta-sbox240423"
   environment: "sbox"
   region: "eu-central-1"
+  externalSecretIAM: "arn:aws:iam::082372472775:role/argocd-infrastructure-secret-sbox"
 
 argo-cd:
   controller:

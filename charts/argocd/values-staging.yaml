@@ -5,6 +5,7 @@ cluster:
   name: "euc1-buildsvc-stage240513"
   environment: "stage"
   region: "eu-central-1"
+  externalSecretIAM: "arn:aws:iam::851725295329:role/argocd-infrastructure-cluster-staging"
 
 argo-cd:
   controller:
