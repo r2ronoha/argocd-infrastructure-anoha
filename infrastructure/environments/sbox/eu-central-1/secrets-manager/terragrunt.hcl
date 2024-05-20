@@ -24,7 +24,7 @@ inputs = {
         sid = "AllowAccountRead"
         principals = [{
           type        = "AWS"
-          identifiers = ["arn:aws:iam::${local.env_vars.locals.account_id}:tf-apply-${local.region_vars.locals.aws_region}-${local.env_vars.locals.tags.environment}"]
+          identifiers = ["arn:aws:iam::*:tf-apply-*"]
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
