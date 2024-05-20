@@ -11,7 +11,7 @@ include {
 }
 
 terraform {
-  source = "github.com/terraform-aws-modules/secrets-manager//wrappers/aws?ref=v1.1.2"
+  source = "github.com/terraform-aws-modules/terraform-aws-secrets-manager//wrappers/aws?ref=v1.1.2"
 }
 
 inputs = {
