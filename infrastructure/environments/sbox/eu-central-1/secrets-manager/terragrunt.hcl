@@ -23,8 +23,11 @@ inputs = {
       read = {
         sid = "AllowAccountRead"
         principals = [{
-          type        = "AWS"
-          identifiers = ["arn:aws:iam::*:tf-apply-*"]
+          type = "AWS"
+          identifiers = [
+            "arn:aws:iam::*:tf-apply-*",
+            "arn:aws:iam::*:tf-plan-*"
+          ]
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
