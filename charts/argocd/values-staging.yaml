@@ -14,9 +14,9 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 1Gi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd-infrastructure"
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::851725295329:role/argocd-infrastructure-cluster-staging
 
   server:
     service:
@@ -60,9 +60,6 @@ argo-cd:
       requests:
         cpu: 100m
         memory: 128Mi
-    metrics:
-      serviceMonitor:
-        namespace: "argocd-infrastructure"
 
   configs:
     cm:
