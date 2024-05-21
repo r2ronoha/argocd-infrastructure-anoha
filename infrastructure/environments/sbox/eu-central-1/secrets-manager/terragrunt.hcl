@@ -30,6 +30,7 @@ inputs = {
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
+      }
     }
   }
   items = {
