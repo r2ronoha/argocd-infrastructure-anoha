@@ -21,17 +21,15 @@ inputs = {
     block_public_policy = true
     policy_statements = {
       read = {
-        sid = "AllowAccountRead"
         principals = [{
           type = "AWS"
           identifiers = [
-            "arn:aws:iam::*:tf-apply-*",
-            "arn:aws:iam::*:tf-plan-*"
+            "arn:aws:iam::*:role/tf-apply-base-*",
+            "arn:aws:iam::*:role/tf-plan-base-*"
           ]
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
-      }
     }
   }
   items = {
