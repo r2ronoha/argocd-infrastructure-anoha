@@ -40,7 +40,8 @@ inputs = {
       ignore_secret_changes = true
       secret_string = jsonencode({
         username = "wandera-viewer",
-        password = "Initial"
+        password = "Initial",
+        url = "https://github.com/wandera"
       })
     }
 
@@ -52,6 +53,7 @@ inputs = {
       ignore_secret_changes = true
       secret_string = jsonencode({
         githubAppPrivateKey     = "github-app",
+        githubAppID             = "Initial",
         githubAppInstallationID = "Initial"
       })
     }
