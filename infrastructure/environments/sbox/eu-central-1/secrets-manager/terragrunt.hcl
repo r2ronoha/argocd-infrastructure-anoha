@@ -41,7 +41,7 @@ inputs = {
       secret_string = jsonencode({
         username = "wandera-viewer",
         password = "Initial",
-        url = "https://github.com/wandera"
+        url      = "https://github.com/wandera"
       })
     }
 
