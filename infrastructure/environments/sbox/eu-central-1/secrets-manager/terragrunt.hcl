@@ -21,14 +21,10 @@ inputs = {
     block_public_policy = true
     policy_statements = {
       read = {
+        sid = "AllowAccountRead"
         principals = [{
-          type = "AWS"
-          identifiers = [
-            "arn:aws:iam::${local.env_vars.locals.account_id}:root",
-            "arn:aws:iam::${local.env_vars.locals.account_id}:role/tf-apply-base-*",
-            "arn:aws:iam::${local.env_vars.locals.account_id}:role/tf-plan-base-*",
-            "arn:aws:iam::${local.env_vars.locals.account_id}:role/argocd-infrastructure-secret-*"
-          ]
+          type        = "AWS"
+          identifiers = ["arn:aws:iam::${local.env_vars.locals.account_id}:root"]
         }]
         actions   = ["secretsmanager:GetSecretValue"]
         resources = ["*"]
