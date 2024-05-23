@@ -33,7 +33,7 @@ inputs = {
   }
   items = {
     wandera_git = {
-      name        = "/argocd/infrastructure/wandera-git-${local.env_vars.locals.tags.environment}"
+      name        = "/argocd/infrastructure/wandera-git"
       description = "AWS Secret Manager entry for GitHub Wandera Org. Credentials"
 
       # Version
@@ -46,7 +46,7 @@ inputs = {
     }
 
     jamf_git = {
-      name        = "/argocd/infrastructure/jamf-git-${local.env_vars.locals.tags.environment}"
+      name        = "/argocd/infrastructure/jamf-git"
       description = "AWS Secret Manager entry for GitHub Jamf App"
 
       # Version
