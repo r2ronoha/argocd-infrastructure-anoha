@@ -15,6 +15,9 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 1Gi
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::992382493208:role/argocd-infrastructure-cluster-production
 
   server:
     service:
