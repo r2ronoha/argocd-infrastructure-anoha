@@ -54,10 +54,10 @@ inputs = {
               },
               "Condition": {
                 "ForAllValues:StringEquals": {
-                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
+                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:argocd-infrastructure-externalsecrets"
                 },
                 "StringLike": {
-                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:kubernetes-external-secrets**"
+                  "oidc.eks.${local.region_vars.locals.aws_region}.amazonaws.com/id/${local.env_vars.locals.oidc}:sub": "system:serviceaccount:${local.env_vars.locals.argocd_namespace}:argocd-infrastructure-externalsecrets"
                 }
               }
        }

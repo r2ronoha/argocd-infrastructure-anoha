@@ -5,6 +5,7 @@ cluster:
   name: "euc1-buildsvc-prod240515"
   environment: "prod"
   region: "eu-central-1"
+  externalSecretIAM: "arn:aws:iam::992382493208:role/argocd-infrastructure-secret-production"
 
 argo-cd:
   controller:
