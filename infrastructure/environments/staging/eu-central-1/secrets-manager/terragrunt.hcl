@@ -16,10 +16,10 @@ terraform {
 
 inputs = {
   defaults = {
-    create              = true
+    create                  = true
     recovery_window_in_days = "${local.env_vars.locals.secret_recovery}"
-    create_policy       = true
-    block_public_policy = true
+    create_policy           = true
+    block_public_policy     = true
     policy_statements = {
       read = {
         sid = "AllowAccountRead"
