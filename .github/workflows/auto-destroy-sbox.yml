@@ -30,7 +30,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Output sbox environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-sbox-environments
       with:
         environment: sbox
