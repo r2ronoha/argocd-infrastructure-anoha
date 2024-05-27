@@ -1,0 +1,56 @@
+name: 'Auto destroy sbox'
+# Destroys sbox environment when the PR that has the "deploy to sbox" label is either merged to the main branch or closed and not merged to any branch
+run-name: Auto - running Terragrunt destroy on sbox on the closed/merged PR 🔥
+
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group: ${{ github.workflow }}
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions: write-all 
+
+jobs:
+  discover-environments:
+    if: |
+      (github.event.pull_request.merged && github.event.pull_request.base.ref == 'main' && contains(github.event.pull_request.labels.*.name, 'deploy to sbox')) ||
+      (!github.event.pull_request.merged && github.event.pull_request.state == 'closed' && contains(github.event.pull_request.labels.*.name, 'deploy to sbox'))
+    name: Discover Environments
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    outputs:
+      sbox-environments: ${{ steps.list-sbox-environments.outputs.environments }}
+    steps:
+    # Checkout the code repository from the pull request that triggered the event
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Output sbox environments
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.0
+      id: list-sbox-environments
+      with:
+        environment: sbox
+  destroy-sbox:
+    name: Destroy sbox
+    runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
+    needs: discover-environments
+    strategy:
+      matrix: ${{ fromJson(needs.discover-environments.outputs.sbox-environments) }}
+      fail-fast: false
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: 'Destroy sbox'
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      with:
+        environment: ${{ matrix.environments }}
+        action: destroy
+        gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
+        gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
+        account_id: "082372472775"
