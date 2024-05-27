@@ -17,6 +17,7 @@ permissions: write-all # This is required for actions/checkout
 
 jobs:
   discover-environments:
+    if: "!contains(github.event.pull_request.labels.*.name, 'deploy to sbox')"
     name: Discover environments
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     outputs:
@@ -53,7 +54,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
       with:
         environment: ${{ matrix.environments }}
         action: plan
@@ -62,9 +63,9 @@ jobs:
         account_id: "082372472775"
 
   plan-staging:
+    if: ${{ needs.discover-environments.outputs.sbox-environments != 'empty' }}
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: discover-environments
-    if: ${{ needs.discover-environments.outputs.staging-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.staging-environments) }}
       fail-fast: false
@@ -72,7 +73,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
       with:
         environment: ${{ matrix.environments }}
         action: plan
@@ -83,7 +84,7 @@ jobs:
   plan-production:
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: discover-environments
-    if: ${{ needs.discover-environments.outputs.production-environments != 'empty' }}
+    if: ${{ needs.discover-environments.outputs.sbox-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
       fail-fast: false
@@ -91,7 +92,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
       with:
         environment: ${{ matrix.environments }}
         action: plan
