@@ -15,6 +15,9 @@ argo-cd:
     metrics:
       enabled: false
 
+  externalRedis:
+    host: argocd-infra-sbox-eu-central-1-redis-001.0sjexd.0001.euc1.cache.amazonaws.com
+
   server:
     resources:
       limits:

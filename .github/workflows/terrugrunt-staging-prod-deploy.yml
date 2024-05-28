@@ -26,12 +26,12 @@ jobs:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v4
     - name: Output staging environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-staging-environments
       with:
         environment: staging
     - name: Output production environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-production-environments
       with:
         environment: production
@@ -60,6 +60,7 @@ jobs:
     environment: staging
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: [discover-environments,deploy-staging]
+    if: ${{ needs.discover-environments.outputs.production-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
       fail-fast: false
@@ -79,6 +80,7 @@ jobs:
     environment: production
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: [discover-environments,deploy-staging,plan-production]
+    if: ${{ needs.discover-environments.outputs.production-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
       fail-fast: false
