@@ -26,12 +26,12 @@ jobs:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v4
     - name: Output staging environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-staging-environments
       with:
         environment: staging
     - name: Output production environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-production-environments
       with:
         environment: production

@@ -28,17 +28,17 @@ jobs:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v4
     - name: Output sbox environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-sbox-environments
       with:
         environment: sbox
     - name: Output staging environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-staging-environments
       with:
         environment: staging
     - name: Output production environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.0.0
+      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
       id: list-production-environments
       with:
         environment: production
@@ -54,7 +54,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
       with:
         environment: ${{ matrix.environments }}
         action: plan
@@ -73,7 +73,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
       with:
         environment: ${{ matrix.environments }}
         action: plan
@@ -92,7 +92,7 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.0
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
       with:
         environment: ${{ matrix.environments }}
         action: plan
