@@ -17,7 +17,7 @@ terraform {
 inputs = {
   defaults = {
     create                  = true
-    recovery_window_in_days = "${local.env_vars.locals.secret_recovery}"
+    recovery_window_in_days = "30"
     create_policy           = true
     block_public_policy     = true
     policy_statements = {

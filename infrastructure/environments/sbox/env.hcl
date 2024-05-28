@@ -7,6 +7,4 @@ locals {
   account_id       = "082372472775"
   oidc             = "6DA95E2866E9ADA3DF845862CE133FA8"
   argocd_namespace = "argocd-infrastructure"
-
-  secret_recovery = "7"
 }
