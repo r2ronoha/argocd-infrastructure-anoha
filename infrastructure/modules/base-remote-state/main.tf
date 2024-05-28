@@ -15,3 +15,7 @@ output "vpc_id" {
 output "database_subnets" {
   value = data.terraform_remote_state.base_remote_state.outputs.database_subnets
 }
+
+output "private_subnets" {
+  value = data.terraform_remote_state.base_remote_state.outputs.private_subnets
+}

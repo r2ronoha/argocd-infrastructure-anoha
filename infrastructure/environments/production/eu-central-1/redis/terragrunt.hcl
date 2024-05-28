@@ -10,6 +10,7 @@ include {
 dependency "base_remote_state" {
   config_path                             = "../base-remote-state"
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
+  mock_outputs_merge_with_state           = true
   mock_outputs = {
     vpc_id           = "mock"
     database_subnets = ["mock"]
