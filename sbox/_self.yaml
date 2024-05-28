@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/jamf/argocd-infrastructure.git
-    targetRevision: redis
+    targetRevision: HEAD
     path: ./sbox
   destination:
     server: https://kubernetes.default.svc

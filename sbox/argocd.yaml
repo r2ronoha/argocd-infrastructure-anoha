@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/jamf/argocd-infrastructure.git
-    targetRevision: redis
+    targetRevision: HEAD
     path: 'charts/argocd'
     helm:
       valueFiles:
