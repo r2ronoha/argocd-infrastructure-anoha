@@ -16,9 +16,10 @@ terraform {
 
 inputs = {
   defaults = {
-    create              = true
-    create_policy       = true
-    block_public_policy = true
+    create                  = true
+    recovery_window_in_days = "30"
+    create_policy           = true
+    block_public_policy     = true
     policy_statements = {
       read = {
         sid = "AllowAccountRead"

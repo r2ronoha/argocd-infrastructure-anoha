@@ -60,6 +60,7 @@ jobs:
     environment: staging
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: [discover-environments,deploy-staging]
+    if: ${{ needs.discover-environments.outputs.production-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
       fail-fast: false
@@ -79,6 +80,7 @@ jobs:
     environment: production
     runs-on: [ "self-hosted", "jamf-ubuntu-latest" ]
     needs: [discover-environments,deploy-staging,plan-production]
+    if: ${{ needs.discover-environments.outputs.production-environments != 'empty' }}
     strategy:
       matrix: ${{ fromJson(needs.discover-environments.outputs.production-environments) }}
       fail-fast: false
