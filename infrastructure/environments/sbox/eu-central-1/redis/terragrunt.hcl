@@ -7,6 +7,16 @@ include {
   path = find_in_parent_folders()
 }
 
+dependency "ssm-read" {
+  config_path                             = "../ssm-read"
+  mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
+  mock_outputs_merge_with_state           = true
+  mock_outputs = {
+    vpc_id           = "mock"
+    subnets = ["mock"]
+  }
+}
+
 dependency "security_groups" {
   config_path                             = "../security-group"
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
