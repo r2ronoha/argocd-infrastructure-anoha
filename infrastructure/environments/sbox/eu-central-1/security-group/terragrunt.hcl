@@ -12,7 +12,7 @@ dependency "ssm-read" {
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
   mock_outputs_merge_with_state           = true
   mock_outputs = {
-    vpc_id           = "mock"
+    vpc_id = "mock"
   }
 }
 
