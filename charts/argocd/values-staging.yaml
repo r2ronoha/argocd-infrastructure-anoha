@@ -19,6 +19,9 @@ argo-cd:
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::851725295329:role/argocd-infrastructure-cluster-staging
 
+  externalRedis:
+    host: argocd-infra-staging-redis-001.irmc0e.0001.euc1.cache.amazonaws.com
+
   server:
     service:
       type: NodePort
