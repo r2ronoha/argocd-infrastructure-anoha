@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "argocd.labels" . | nindent 4 }}
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: "https://kubernetes.default.svc"
+  sourceRepos:
+  - 'https://github.com/wandera/kubernetes-infrastructure.git'
+  - 'https://github.com/jamf/argocd-infrastructure.git'
+  roles:
+  - name: owner
+    groups:
+    - "Wandera - Delta Team"
+    - "k8s-team"
+    policies:
+    - p, proj:default:owner, applications, * , default/*, allow
+    - p, proj:observability:owner, repositories, get, *, allow
