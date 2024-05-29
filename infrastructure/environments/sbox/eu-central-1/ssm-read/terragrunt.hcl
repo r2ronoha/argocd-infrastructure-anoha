@@ -13,5 +13,5 @@ terraform {
 }
 
 inputs = {
-  path = "/cloud/vpc/delta-staging/attributes/"
+  path = "/cloud/vpc/delta-${local.env_vars.locals.tags.environment}/attributes/vpc_id"
 }
