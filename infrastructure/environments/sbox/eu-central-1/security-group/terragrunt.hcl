@@ -23,7 +23,7 @@ terraform {
 inputs = {
   name         = "argocd-infra-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}-redis"
   description  = "Security group for argocd-infrastructure Redis"
-  vpc_id       = [dependency.ssm-read.outputs.ssm_vpc_id]
+  vpc_id       = dependency.ssm-read.outputs.vpc_id
   egress_rules = ["all-all"]
   ingress_with_cidr_blocks = [
     {

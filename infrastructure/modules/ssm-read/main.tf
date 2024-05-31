@@ -8,7 +8,7 @@ data "aws_ssm_parameter" "ssm_sn" {
   name = var.ssm_sn_path
 }
 
-output "ssm_vpc_id" {
+output "vpc_id" {
   value = data.aws_ssm_parameter.ssm_vpc.value
 }
 
