@@ -13,5 +13,5 @@ terraform {
 
 inputs = {
   ssm_vpc_path = "/cloud/vpc/delta-${local.env_vars.locals.tags.environment}/attributes/vpc_id"
-  ssm_sn_path  = "	/cloud/vpc/eks/attributes/subnets/db_sn_ids"
+  ssm_sn_path  = "/cloud/vpc/eks/attributes/subnets/db_sn_ids"
 }
