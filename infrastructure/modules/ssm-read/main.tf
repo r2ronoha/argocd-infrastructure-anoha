@@ -10,8 +10,10 @@ data "aws_ssm_parameter" "ssm_sn" {
 
 output "vpc_id" {
   value = data.aws_ssm_parameter.ssm_vpc.value
+  sensitive = true
 }
 
 output "ssm_sn_id" {
   value = data.aws_ssm_parameter.ssm_sn.value
+  sensitive = true
 }
