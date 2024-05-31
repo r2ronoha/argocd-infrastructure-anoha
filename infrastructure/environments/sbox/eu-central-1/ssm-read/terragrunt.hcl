@@ -13,5 +13,5 @@ terraform {
 }
 
 inputs = {
-  path = "/cloud/vpc/delta-${local.env_vars.locals.tags.environment}/attributes/vpc_id"
+  ssm_path = "/cloud/vpc/delta-${local.env_vars.locals.tags.environment}/attributes/vpc_id"
 }

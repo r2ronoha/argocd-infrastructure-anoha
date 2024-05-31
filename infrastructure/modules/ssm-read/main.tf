@@ -1,3 +1,3 @@
-data "aws_ssm_parameters_by_path" "ssm-read" {
-  path = var.path
+data "aws_ssm_parameter" "ssm-read" {
+  name = var.ssm_path
 }
