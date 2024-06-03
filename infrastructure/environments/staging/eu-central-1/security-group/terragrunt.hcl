@@ -7,13 +7,12 @@ include {
   path = find_in_parent_folders()
 }
 
-dependency "base_remote_state" {
-  config_path                             = "../base-remote-state"
+dependency "ssm-read" {
+  config_path                             = "../ssm-read"
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
+  mock_outputs_merge_with_state           = true
   mock_outputs = {
-    vpc_id          = "mock"
-    public_subnets  = ["mock"]
-    private_subnets = ["mock"]
+    vpc_id = "mock"
   }
 }
 
@@ -24,7 +23,7 @@ terraform {
 inputs = {
   name         = "argocd-infra-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}-redis"
   description  = "Security group for argocd-infrastructure Redis"
-  vpc_id       = dependency.base_remote_state.outputs.vpc_id
+  vpc_id       = dependency.ssm-read.outputs.vpc_id
   egress_rules = ["all-all"]
   ingress_with_cidr_blocks = [
     {

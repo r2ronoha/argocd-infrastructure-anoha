@@ -7,16 +7,6 @@ include {
   path = find_in_parent_folders()
 }
 
-dependency "ssm-read" {
-  config_path                             = "../ssm-read"
-  mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
-  mock_outputs_merge_with_state           = true
-  mock_outputs = {
-    vpc_id  = "mock"
-    subnets = ["mock"]
-  }
-}
-
 dependency "security_groups" {
   config_path                             = "../security-group"
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
@@ -31,7 +21,7 @@ terraform {
 
 inputs = {
   name                          = "argocd-infra-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}-redis"
-  vpc_id                        = "vpc-009b4ffc6d22516c5"
+  vpc_id                        = "vpc-009b4ffc6d22516c5" #this value can't be taken from SSM on sbox
   subnets                       = ["subnet-0272e8b5672c40318", "subnet-0b30205ac830bf36d", "subnet-06629ff459d378c94"]
   instance_type                 = "cache.t2.small"
   apply_immediately             = true
