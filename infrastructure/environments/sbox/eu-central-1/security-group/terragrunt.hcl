@@ -14,7 +14,7 @@ terraform {
 inputs = {
   name         = "argocd-infra-${local.env_vars.locals.tags.environment}-${local.region_vars.locals.aws_region}-redis"
   description  = "Security group for argocd-infrastructure Redis"
-  vpc_id       = "vpc-009b4ffc6d22516c5"
+  vpc_id       = "vpc-009b4ffc6d22516c5" #this value can't be taken from SSM on sbox
   egress_rules = ["all-all"]
   ingress_with_cidr_blocks = [
     {
