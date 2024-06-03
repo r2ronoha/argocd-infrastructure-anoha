@@ -13,7 +13,7 @@ output "vpc_id" {
   sensitive = true
 }
 
-output "ssm_sn_id" {
+output "db_sn_id" {
   value = data.aws_ssm_parameter.ssm_sn.value
   sensitive = true
 }
