@@ -89,19 +89,8 @@ argo-cd:
             emailAttr: email
             groupsAttr: group
     rbac:
+      policy.default: read-only
       policy.csv: |
         p, role:applications-sync, applications, sync, *, allow
-        p, role:sync-monitoring-proxy, applications, sync, *monitoring-proxy, allow
-        g, JSC-ArgoCD-ReadOnly, role:readonly
         g, Wandera - Delta Team, role:admin
-        g, Wandera Platform Core Team, role:admin
-        g, Wandera Platform Edge Team, role:admin
-        g, Wandera EOps Team, role:readonly
-        g, Wandera EOps Team, role:applications-sync
-        g, Wandera DBA Team, role:readonly
-        g, Wandera DBA Team, role:applications-sync
-        g, Wandera - DBA Group, role:readonly
-        g, Wandera - DBA Group, role:applications-sync
-        g, Wandera - Tech Team, role:readonly
-        g, Green Squad, role:sync-monitoring-proxy
       scopes: '[email,groups]'

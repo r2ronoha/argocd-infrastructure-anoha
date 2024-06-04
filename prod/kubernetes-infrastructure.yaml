@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/wandera/kubernetes-infrastructure.git
-    targetRevision: arogocd-chaos-poc
+    targetRevision: HEAD
     path: ./infrastructure-argocd-infrastructure-prod
   destination:
     server: https://kubernetes.default.svc
