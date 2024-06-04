@@ -7,13 +7,13 @@ include {
   path = find_in_parent_folders()
 }
 
-dependency "base_remote_state" {
-  config_path                             = "../base-remote-state"
+dependency "ssm-read" {
+  config_path                             = "../ssm-read"
   mock_outputs_allowed_terraform_commands = ["validate-inputs", "validate", "plan", "output"]
   mock_outputs_merge_with_state           = true
   mock_outputs = {
-    vpc_id           = "mock"
-    database_subnets = ["mock"]
+    vpc_id   = "mock"
+    db_sn_id = ["mock"]
   }
 }
 
@@ -31,8 +31,8 @@ terraform {
 
 inputs = {
   name                          = "argocd-infra-${local.env_vars.locals.tags.environment}-redis"
-  vpc_id                        = dependency.base_remote_state.outputs.vpc_id
-  subnets                       = dependency.base_remote_state.outputs.database_subnets
+  vpc_id                        = dependency.ssm-read.outputs.vpc_id
+  subnets                       = dependency.ssm-read.outputs.db_sn_id
   instance_type                 = "cache.t4g.medium"
   apply_immediately             = true
   automatic_failover_enabled    = false
