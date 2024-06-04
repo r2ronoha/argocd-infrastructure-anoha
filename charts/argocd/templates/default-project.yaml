@@ -18,6 +18,7 @@ spec:
   sourceRepos:
   - 'https://github.com/wandera/kubernetes-infrastructure.git'
   - 'https://github.com/jamf/argocd-infrastructure.git'
+  - 'https://github.com/jamf/k8s-argocd-clusters.git'
   roles:
   - name: owner
     groups:
