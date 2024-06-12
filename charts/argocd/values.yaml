@@ -83,7 +83,7 @@ argo-cd:
     - name: global-config-cmp
       command: [ /var/run/argocd/argocd-cmp-server ]
       args: [ "--logformat=json" ]
-      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:c8fbdf9
+      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:2659573
       env:
       - name: HELM_CACHE_HOME
         value: /helm-working-dir
