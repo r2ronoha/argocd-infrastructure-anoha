@@ -26,12 +26,12 @@ jobs:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v4
     - name: Output staging environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
+      uses: jamf/github-actions-terragrunt/discover-environments@v2.0.0
       id: list-staging-environments
       with:
         environment: staging
     - name: Output production environments
-      uses: jamf/github-actions-terragrunt/discover-environments@v1.2.1
+      uses: jamf/github-actions-terragrunt/discover-environments@v2.0.0
       id: list-production-environments
       with:
         environment: production
@@ -48,9 +48,9 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: apply
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v2.0.0
       with:
-        environment: ${{ matrix.environments }}
+        path: ${{ matrix.environments.path }}
         action: apply
         gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
         gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
@@ -68,9 +68,9 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: plan
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v2.0.0
       with:
-        environment: ${{ matrix.environments }}
+        path: ${{ matrix.environments.path }}
         action: plan
         gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
         gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
@@ -88,9 +88,9 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v4
     - name: apply
-      uses: jamf/github-actions-terragrunt/terragrunt-action@v1.2.1
+      uses: jamf/github-actions-terragrunt/terragrunt-action@v2.0.0
       with:
-        environment: ${{ matrix.environments }}
+        path: ${{ matrix.environments.path }}
         action: apply
         gh_app_secret: ${{ secrets.GH_APP_INFRA_MODULES_PRIVATE_KEY }}
         gh_app_id: ${{ secrets.GH_APP_INFRA_MODULES_ID }}
