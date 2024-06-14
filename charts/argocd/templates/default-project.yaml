@@ -25,5 +25,5 @@ spec:
     - "Wandera - Delta Team"
     - "k8s-team"
     policies:
-    - p, proj:default:owner, applications, * , default/*, allow
+    - p, proj:default:owner, applications, *, default/*, allow
     - p, proj:observability:owner, repositories, get, *, allow
