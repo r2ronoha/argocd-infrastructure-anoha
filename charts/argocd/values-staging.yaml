@@ -31,6 +31,9 @@ argo-cd:
       requests:
         cpu: 200m
         memory: 128Mi
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::851725295329:role/argocd-infrastructure-cluster-staging
     ingress:
       enabled: true
       controller: aws
