@@ -22,6 +22,24 @@ argo-cd:
       serviceMonitor:
         enabled: true
         namespace: "argocd-infrastructure"
+        metricRelabelings:
+          - action: replace
+            replacement: delta
+            targetLabel: team
+          - action: replace
+            replacement: argocd
+            targetLabel: product
+          - action: replace
+            replacement: argocd-server
+            targetLabel: service
+          - action: keep
+            regex: argocd_redis_request_total|grpc_server_handled_total
+            sourceLabels:
+              - __name__
+        additionalLabels:
+          jamf.com/team-channel: ask-delta
+          jamf.com/team-name: delta
+          jamf.com/thanos-monitored: "true"
     config:
       application.resourceTrackingMethod: annotation
 
@@ -37,6 +55,24 @@ argo-cd:
       serviceMonitor:
         enabled: true
         namespace: "argocd-infrastructure"
+        metricRelabelings:
+          - action: replace
+            replacement: delta
+            targetLabel: team
+          - action: replace
+            replacement: argocd
+            targetLabel: product
+          - action: replace
+            replacement: argocd-repo-server
+            targetLabel: service
+          - action: keep
+            regex: argocd_git_request_total|argocd_git_request_duration_seconds_bucket
+            sourceLabels:
+              - __name__
+        additionalLabels:
+          jamf.com/team-channel: ask-delta
+          jamf.com/team-name: delta
+          jamf.com/thanos-monitored: "true"
 
     env:
     - name: WANDERA_VIEWER_TOKEN
@@ -151,6 +187,24 @@ argo-cd:
       serviceMonitor:
         enabled: true
         namespace: "argocd-infrastructure"
+        metricRelabelings:
+          - action: replace
+            replacement: delta
+            targetLabel: team
+          - action: replace
+            replacement: argocd
+            targetLabel: product
+          - action: replace
+            replacement: argocd-application-controller
+            targetLabel: service
+          - action: keep
+            regex: argocd_app_info|argocd_cluster_info|argocd_app_sync_total|argocd_app_reconcile_count|argocd_app_reconcile_bucket|argocd_kubectl_exec_pending|argocd_app_k8s_request_total|argocd_cluster_events_total|argocd_cluster_api_resource_objects|argocd_cluster_api_resources|argocd_redis_request_total|argocd_cluster_connection_status
+            sourceLabels:
+              - __name__
+        additionalLabels:
+          jamf.com/team-channel: ask-delta
+          jamf.com/team-name: delta
+          jamf.com/thanos-monitored: "true"
 
   applicationSet:
     metrics:
@@ -158,6 +212,20 @@ argo-cd:
       serviceMonitor:
         enabled: true
         namespace: "argocd-infrastructure"
+        metricRelabelings:
+          - action: replace
+            replacement: delta
+            targetLabel: team
+          - action: replace
+            replacement: argocd
+            targetLabel: product
+          - action: replace
+            replacement: argocd-application-controller
+            targetLabel: service
+        additionalLabels:
+          jamf.com/team-channel: ask-delta
+          jamf.com/team-name: delta
+          jamf.com/thanos-monitored: "true"
 
   notifications:
     enabled: false
