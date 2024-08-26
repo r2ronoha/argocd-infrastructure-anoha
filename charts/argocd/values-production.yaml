@@ -95,9 +95,12 @@ argo-cd:
             usernameAttr: email
             emailAttr: email
             groupsAttr: group
+      accounts.applications-deleter: apiKey
     rbac:
       policy.csv: |
         g, Engineering - All Staff, role:readonly
-        p, role:applications-sync, applications, sync, *, allow
         g, Wandera - Delta Team, role:admin
+        # For testing purposes only (requested by Arturo Noha)
+        p, role:applications-delete, applications, delete, *-chaos-zb-*, allow
+        g, applications-deleter, role:applications-delete
       scopes: '[email,groups]'
