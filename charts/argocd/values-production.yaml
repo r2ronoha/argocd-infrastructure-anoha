@@ -98,6 +98,5 @@ argo-cd:
     rbac:
       policy.csv: |
         g, Engineering - All Staff, role:readonly
-        p, role:applications-sync, applications, sync, *, allow
         g, Wandera - Delta Team, role:admin
       scopes: '[email,groups]'

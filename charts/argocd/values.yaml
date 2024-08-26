@@ -236,8 +236,6 @@ argo-cd:
       server.insecure: true
     cm:
       admin.enabled: false
-      accounts.applications-syncer: apiKey
-      accounts.terraform: apiKey
 
     rbac:
       policy.csv: |
