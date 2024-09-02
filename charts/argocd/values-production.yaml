@@ -101,6 +101,7 @@ argo-cd:
         g, Engineering - All Staff, role:readonly
         g, Wandera - Delta Team, role:admin
         # For testing purposes only (requested by Arturo Noha)
+        p, role:applications-delete, applications, get, *-chaos-zb-*, allow
         p, role:applications-delete, applications, delete, *-chaos-zb-*, allow
         g, applications-deleter, role:applications-delete
       scopes: '[email,groups]'
