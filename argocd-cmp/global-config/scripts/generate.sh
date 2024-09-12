@@ -45,6 +45,7 @@ helm dependency update > /dev/null
 mkdir -p chaos/${ARGOCD_ENV_APPLICATION}/${ARGOCD_ENV_ENVIRONMENT}/${ARGOCD_ENV_CLUSTER_TYPE}/${ARGOCD_ENV_CLUSTER_REGION}/${ARGOCD_ENV_CLUSTER_NAME}
 VALUES=( values chaos/values chaos/${ARGOCD_ENV_APPLICATION}/values chaos/${ARGOCD_ENV_APPLICATION}/${ARGOCD_ENV_ENVIRONMENT}/values chaos/${ARGOCD_ENV_APPLICATION}/${ARGOCD_ENV_ENVIRONMENT}/${ARGOCD_ENV_CLUSTER_TYPE}/values chaos/${ARGOCD_ENV_APPLICATION}/${ARGOCD_ENV_ENVIRONMENT}/${ARGOCD_ENV_CLUSTER_TYPE}/${ARGOCD_ENV_CLUSTER_REGION}/values chaos/${ARGOCD_ENV_APPLICATION}/${ARGOCD_ENV_ENVIRONMENT}/${ARGOCD_ENV_CLUSTER_TYPE}/${ARGOCD_ENV_CLUSTER_REGION}/${ARGOCD_ENV_CLUSTER_NAME}/values)
 touch $(printf "%s.tmpl "  "${VALUES[@]}")
+touch $(printf "%s.yaml "  "${VALUES[@]}")
 
 # Fill in the app-agnostic hierarchy if some files or subdirectories are missing.
 CONFIG_PATH=../../config
