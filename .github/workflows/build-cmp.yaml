@@ -34,7 +34,7 @@ jobs:
         aws-region: ${{ env.ECR_REGION }}
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@v2
       with:
         registries: ${{ env.ECR_REGISTRY }}
         mask-password: "true" # see: https://github.com/aws-actions/amazon-ecr-login#docker-credentials
