@@ -29,8 +29,7 @@ argo-cd:
       enabled: false
     ingress:
       enabled: true
-      hosts:
-      - "argocd-infrastructure.sbox.jamf.build"
+      hostname: "argocd-infrastructure.sbox.jamf.build"
 
   repoServer:
     resources:

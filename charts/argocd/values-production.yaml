@@ -45,8 +45,7 @@ argo-cd:
       enabled: true
       controller: aws
       ingressClassName: alb
-      hosts:
-      - "argocd-infrastructure.jamf.build"
+      hostname: "argocd-infrastructure.jamf.build"
       annotations:
         alb.ingress.kubernetes.io/scheme: internal
         alb.ingress.kubernetes.io/target-type: instance

@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/jamf/argocd-infrastructure.git
-    targetRevision: HEAD
+    targetRevision: JSC-58687-argocd-upgrade
     path: 'charts/argocd'
     helm:
       valueFiles:

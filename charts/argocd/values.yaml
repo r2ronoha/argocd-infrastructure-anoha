@@ -40,8 +40,6 @@ argo-cd:
           jamf.com/team-channel: ask-delta
           jamf.com/team-name: delta
           jamf.com/thanos-monitored: "true"
-    config:
-      application.resourceTrackingMethod: annotation
 
   redis:
     enabled: false
@@ -236,6 +234,7 @@ argo-cd:
       server.insecure: true
     cm:
       admin.enabled: false
+      application.resourceTrackingMethod: annotation
 
     rbac:
       policy.csv: |
