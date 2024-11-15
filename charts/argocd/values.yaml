@@ -40,8 +40,6 @@ argo-cd:
           jamf.com/team-channel: ask-delta
           jamf.com/team-name: delta
           jamf.com/thanos-monitored: "true"
-    config:
-      application.resourceTrackingMethod: annotation
 
   redis:
     enabled: false
@@ -119,7 +117,7 @@ argo-cd:
     - name: global-config-cmp
       command: [ /var/run/argocd/argocd-cmp-server ]
       args: [ "--logformat=json" ]
-      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:eddb248
+      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:e1a7c93
       env:
       - name: HELM_CACHE_HOME
         value: /helm-working-dir
@@ -236,6 +234,7 @@ argo-cd:
       server.insecure: true
     cm:
       admin.enabled: false
+      application.resourceTrackingMethod: annotation
 
     rbac:
       policy.csv: |
