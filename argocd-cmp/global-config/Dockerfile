@@ -10,7 +10,7 @@ ENV GOMPLATE_VERSION=v3.11.7
 RUN curl https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64 -Lo /usr/bin/gomplate && \
     chmod +x /usr/bin/gomplate
 
-ENV HELM_VERSION=v3.15.4
+ENV HELM_VERSION=v3.15.2
 RUN curl https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -Lo /tmp/helm-${HELM_VERSION}-linux-amd64.tar.gz && \
     tar -zxvf /tmp/helm-${HELM_VERSION}-linux-amd64.tar.gz -C /tmp && mv /tmp/linux-amd64/helm /usr/local/bin/helm && \
     helm plugin install https://github.com/wandera/helm-github --version 0.1.7
