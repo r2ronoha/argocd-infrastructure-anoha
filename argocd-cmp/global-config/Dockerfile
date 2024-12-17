@@ -13,7 +13,7 @@ RUN curl https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE
 ENV HELM_VERSION=v3.15.2
 RUN curl https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -Lo /tmp/helm-${HELM_VERSION}-linux-amd64.tar.gz && \
     tar -zxvf /tmp/helm-${HELM_VERSION}-linux-amd64.tar.gz -C /tmp && mv /tmp/linux-amd64/helm /usr/local/bin/helm && \
-    helm plugin install https://github.com/wandera/helm-github --version 0.1.8
+    helm plugin install https://github.com/wandera/helm-github --version 0.1.9
 
 ENV KUSTOMIZE_VERSION=v5.4.1
 RUN curl https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz -Lo /tmp/kustomize-${KUSTOMIZE_VERSION}-linux-amd64.tar.gz && \
