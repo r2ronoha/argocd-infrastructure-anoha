@@ -107,7 +107,7 @@ argo-cd:
       args:
       - >-
         apk --no-cache add curl bash &&
-        helm plugin install https://github.com/wandera/helm-github --version 0.1.8 &&
+        helm plugin install https://github.com/wandera/helm-github --version 0.1.9 &&
         rm -rf $HELM_DATA_HOME/plugins/https-github.com-wandera-helm-github &&
         helm repo add kubernetes-descriptors github://wandera/kubernetes-descriptors &&
         helm repo add elastic https://helm.elastic.co &&
@@ -117,7 +117,7 @@ argo-cd:
     - name: global-config-cmp
       command: [ /var/run/argocd/argocd-cmp-server ]
       args: [ "--logformat=json" ]
-      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:3192bb3
+      image: 359585083818.dkr.ecr.us-east-1.amazonaws.com/jamf/ga/argocd/cmp/global-config:f3c8db6
       env:
       - name: HELM_CACHE_HOME
         value: /helm-working-dir
